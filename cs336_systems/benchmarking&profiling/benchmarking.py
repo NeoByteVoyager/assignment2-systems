@@ -4,6 +4,8 @@ import timeit
 from cs336_basics.transformer_lm import Model
 from cs336_basics.adamw import AdamW
 from cs336_basics.crossentropy import crossEntropy
+import argparse
+
 
 def benchmark(
         d_model,
@@ -39,8 +41,8 @@ def benchmark(
 
         for _ in range(steps):
             start = timeit.default_timer()
-
-            model(input_ids)
+            with torch.cuda.nvtx.range("forward"):
+                model(input_ids)
 
             torch.cuda.synchronize()
             end = timeit.default_timer()
@@ -69,14 +71,15 @@ def benchmark(
 
         for _ in range(steps):
             start = timeit.default_timer()
-
-            logits = model(input_ids)
+            with torch.cuda.nvtx.range("forward"):
+                logits = model(input_ids)
             loss = crossEntropy(
                 logits.view(-1, logits.shape[-1]),
                 targets.view(-1)
             )
             optimizer.zero_grad()
-            loss.backward()
+            with torch.cuda.nvtx.range("backward"):
+                loss.backward()
 
             torch.cuda.synchronize()
             end = timeit.default_timer()
@@ -92,6 +95,7 @@ def benchmark(
     elif mode == "full":
         # warm up
         for _ in range(warmup):
+
             logits = model(input_ids)
             loss = crossEntropy(
                 logits.view(-1, logits.shape[-1]),
@@ -100,6 +104,7 @@ def benchmark(
             optimizer.zero_grad()
 
             loss.backward()
+
 
             optimizer.step()
 
@@ -108,17 +113,18 @@ def benchmark(
 
         for _ in range(steps):
             start = timeit.default_timer()
-
-            logits = model(input_ids)
+            with torch.cuda.nvtx.range("forward"):
+                logits = model(input_ids)
             loss = crossEntropy(
                 logits.view(-1, logits.shape[-1]),
                 targets.view(-1)
             )
             optimizer.zero_grad()
+            with torch.cuda.nvtx.range("backward"):
+                loss.backward()
 
-            loss.backward()
-
-            optimizer.step()
+            with torch.cuda.nvtx.range("optimize"):
+                optimizer.step()
 
             torch.cuda.synchronize()
             end = timeit.default_timer()
@@ -131,5 +137,20 @@ def benchmark(
         print(f"mean_time: {mean_time}")
         print(f"std_time: {std_time}")
 
-benchmark(512, 4, 8, 1344)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default="forward",
+        choices=["forward", "forwardandbackward", "full"],
+    )
+    parser.add_argument("--d_model", type=int, default=512)
+    parser.add_argument("--num_layers", type=int, default=4)
+    parser.add_argument("--num_heads", type=int, default=8)
+    parser.add_argument("--d_ff", type=int, default=1344)
+
+    args = parser.parse_args()
+
+    benchmark(args.d_model, args.num_layers, args.num_heads, args.d_ff, mode=args.mode)
 
