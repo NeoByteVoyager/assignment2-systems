@@ -5,6 +5,36 @@ import torch
 from cs336_basics.adamw import AdamW
 from cs336_basics.crossentropy import crossEntropy
 from cs336_basics.transformer_lm import Model
+import torch.cuda.nvtx as nvtx
+import cs336_basics.transformer_block as transformer_block
+
+
+@nvtx.range("scaled dot product attention")
+def annotated_scaled_dot_product_attention(q, k, v, mask=None):
+    d_k = q.shape[-1]
+
+    with nvtx.range("computing attention scores"):
+        attention_map = torch.einsum(
+            "... seq1 d_k, ... seq2 d_k -> ... seq1 seq2",
+            q, k
+        ) / (d_k ** 0.5)
+
+        if mask is not None:
+            attention_map = attention_map.masked_fill(~mask, float("-inf"))
+
+    with nvtx.range("computing softmax"):
+        scaled_attention = torch.softmax(attention_map, dim=-1)
+
+    with nvtx.range("final matmul"):
+        output = torch.einsum(
+            "... seq1 seq2, ... seq2 d_v -> ... seq1 d_v",
+            scaled_attention, v
+        )
+
+    return output
+
+
+transformer_block.scaled_dot_product_attention = annotated_scaled_dot_product_attention
 
 
 def benchmark(
