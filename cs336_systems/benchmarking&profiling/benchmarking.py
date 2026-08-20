@@ -37,9 +37,9 @@ def benchmark(
             model(input_ids)
 
         times = []
-        torch.cuda.synchronize()
 
         for _ in range(steps):
+            torch.cuda.synchronize()
             start = timeit.default_timer()
             with torch.cuda.nvtx.range("forward"):
                 model(input_ids)
@@ -55,7 +55,7 @@ def benchmark(
         print(f"mean_time: {mean_time}")
         print(f"std_time: {std_time}")
 
-    elif mode == "forwardandbackward":
+    elif mode == "backward":
         # warm up
         for _ in range(warmup):
             logits = model(input_ids)
@@ -67,17 +67,18 @@ def benchmark(
             loss.backward()
 
         times = []
-        torch.cuda.synchronize()
+
 
         for _ in range(steps):
-            start = timeit.default_timer()
-            with torch.cuda.nvtx.range("forward"):
-                logits = model(input_ids)
+            logits = model(input_ids)
             loss = crossEntropy(
                 logits.view(-1, logits.shape[-1]),
                 targets.view(-1)
             )
             optimizer.zero_grad()
+
+            torch.cuda.synchronize()
+            start = timeit.default_timer()
             with torch.cuda.nvtx.range("backward"):
                 loss.backward()
 
@@ -92,7 +93,7 @@ def benchmark(
         print(f"mean_time: {mean_time}")
         print(f"std_time: {std_time}")
 
-    elif mode == "full":
+    elif mode == "optimize":
         # warm up
         for _ in range(warmup):
 
@@ -112,19 +113,17 @@ def benchmark(
         torch.cuda.synchronize()
 
         for _ in range(steps):
-            start = timeit.default_timer()
-            with torch.cuda.nvtx.range("forward"):
-                logits = model(input_ids)
+            logits = model(input_ids)
             loss = crossEntropy(
                 logits.view(-1, logits.shape[-1]),
                 targets.view(-1)
             )
             optimizer.zero_grad()
-            with torch.cuda.nvtx.range("backward"):
-                loss.backward()
+            loss.backward()
 
-            with torch.cuda.nvtx.range("optimize"):
-                optimizer.step()
+            torch.cuda.synchronize()
+            start = timeit.default_timer()
+            optimizer.step()
 
             torch.cuda.synchronize()
             end = timeit.default_timer()
@@ -143,7 +142,7 @@ if __name__ == "__main__":
         "--mode",
         type=str,
         default="forward",
-        choices=["forward", "forwardandbackward", "full"],
+        choices=["forward", "backward", "optimize"],
     )
     parser.add_argument("--d_model", type=int, default=512)
     parser.add_argument("--num_layers", type=int, default=4)
