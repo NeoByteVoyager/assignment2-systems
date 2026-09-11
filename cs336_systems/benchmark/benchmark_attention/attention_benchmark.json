@@ -1,0 +1,218 @@
+[
+    {
+        "batch_size": 8,
+        "seq_len": 256,
+        "dim": 16,
+        "forward_ms": 0.2807009600337551,
+        "backward_ms": 0.6128088999821557,
+        "mem_avg": 18.875,
+        "peak_mem_avg": 23.0
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 256,
+        "dim": 32,
+        "forward_ms": 0.27631458002360887,
+        "backward_ms": 0.6165601500288176,
+        "mem_avg": 19.375,
+        "peak_mem_avg": 23.625
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 256,
+        "dim": 64,
+        "forward_ms": 0.27531594995252817,
+        "backward_ms": 0.6218155199758257,
+        "mem_avg": 20.375,
+        "peak_mem_avg": 24.875
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 256,
+        "dim": 128,
+        "forward_ms": 0.3023892200008049,
+        "backward_ms": 0.6271691300071325,
+        "mem_avg": 22.375,
+        "peak_mem_avg": 27.375
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 512,
+        "dim": 16,
+        "forward_ms": 0.5496136600368118,
+        "backward_ms": 1.0788327099953676,
+        "mem_avg": 25.75,
+        "peak_mem_avg": 42.0
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 512,
+        "dim": 32,
+        "forward_ms": 0.5408187899911354,
+        "backward_ms": 1.0772039399898858,
+        "mem_avg": 26.75,
+        "peak_mem_avg": 43.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 512,
+        "dim": 64,
+        "forward_ms": 0.5592450699759866,
+        "backward_ms": 1.1179749400116634,
+        "mem_avg": 28.75,
+        "peak_mem_avg": 45.75
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 512,
+        "dim": 128,
+        "forward_ms": 0.6358264599930408,
+        "backward_ms": 1.2344801800009009,
+        "mem_avg": 32.75,
+        "peak_mem_avg": 50.75
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 1024,
+        "dim": 16,
+        "forward_ms": 1.745082000002185,
+        "backward_ms": 2.883653809990392,
+        "mem_avg": 52.25,
+        "peak_mem_avg": 116.75
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 1024,
+        "dim": 32,
+        "forward_ms": 1.758719979993657,
+        "backward_ms": 2.9014692600458147,
+        "mem_avg": 54.25,
+        "peak_mem_avg": 119.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 1024,
+        "dim": 64,
+        "forward_ms": 1.8758900800003175,
+        "backward_ms": 3.152635920000648,
+        "mem_avg": 58.25,
+        "peak_mem_avg": 124.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 1024,
+        "dim": 128,
+        "forward_ms": 2.358680440011085,
+        "backward_ms": 4.244073840004603,
+        "mem_avg": 66.25,
+        "peak_mem_avg": 134.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 2048,
+        "dim": 16,
+        "forward_ms": 6.603214989986554,
+        "backward_ms": 10.447225089978929,
+        "mem_avg": 156.25,
+        "peak_mem_avg": 413.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 2048,
+        "dim": 32,
+        "forward_ms": 6.72854972998266,
+        "backward_ms": 10.640767339991726,
+        "mem_avg": 160.25,
+        "peak_mem_avg": 418.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 2048,
+        "dim": 64,
+        "forward_ms": 7.258830970022245,
+        "backward_ms": 11.703667069973562,
+        "mem_avg": 168.25,
+        "peak_mem_avg": 428.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 2048,
+        "dim": 128,
+        "forward_ms": 9.017063849996703,
+        "backward_ms": 15.21215170999767,
+        "mem_avg": 184.25,
+        "peak_mem_avg": 448.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 4096,
+        "dim": 16,
+        "forward_ms": 25.520878360025563,
+        "backward_ms": 39.62430697998116,
+        "mem_avg": 568.25,
+        "peak_mem_avg": 1594.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 4096,
+        "dim": 32,
+        "forward_ms": 26.273973680008567,
+        "backward_ms": 40.525656660020104,
+        "mem_avg": 576.25,
+        "peak_mem_avg": 1604.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 4096,
+        "dim": 64,
+        "forward_ms": 28.50827049999225,
+        "backward_ms": 44.194845969987,
+        "mem_avg": 592.25,
+        "peak_mem_avg": 1624.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 4096,
+        "dim": 128,
+        "forward_ms": 36.20556425999894,
+        "backward_ms": 58.65246304998436,
+        "mem_avg": 624.25,
+        "peak_mem_avg": 1664.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 8192,
+        "dim": 16,
+        "forward_ms": 103.10673941001369,
+        "backward_ms": 163.62543902002017,
+        "mem_avg": 2208.25,
+        "peak_mem_avg": 6308.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 8192,
+        "dim": 32,
+        "forward_ms": 107.89244016994871,
+        "backward_ms": 171.28401212998597,
+        "mem_avg": 2224.25,
+        "peak_mem_avg": 6328.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 8192,
+        "dim": 64,
+        "forward_ms": 121.95594341998913,
+        "backward_ms": 185.45327053003803,
+        "mem_avg": 2256.25,
+        "peak_mem_avg": 6368.25
+    },
+    {
+        "batch_size": 8,
+        "seq_len": 8192,
+        "dim": 128,
+        "forward_ms": 167.27694688002885,
+        "backward_ms": 246.83659350997914,
+        "mem_avg": 2320.25,
+        "peak_mem_avg": 6448.25
+    }
+]
